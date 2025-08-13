@@ -12,21 +12,13 @@ import {
   Settings,
   ChevronDown,
   Package,
-  Users,
-  BarChart,
   CreditCard,
-  Store,
-  Megaphone,
-  ChartNoAxesCombined,
   Mail,
   FileSearch,
-  Gavel,
-  Briefcase,
   Star,
-  Truck,
-  Receipt,
   Menu,
   X,
+  Bell,
 } from "lucide-react";
 import Image from "next/image";
 import SideProfilePopUp from "../../popup/side-profile-popup";
@@ -39,216 +31,61 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+  // Profile Section
   {
     label: "Dashboard",
     icon: <LayoutDashboard size={18} />,
     link: "/",
   },
-  { label: "Profile", icon: <User size={18} />, link: "/profile" },
+  { label: "My Profile", icon: <User size={18} />, link: "/profile" },
+
+  // Buying Section
   {
-    label: "Categories",
+    label: "Browse Products",
     icon: <Layers size={18} />,
-    link: "/categories",
-    subItems: [
-      { label: "Bicycles", link: "/categories/bicycles" },
-      { label: "Exercise Bicycles", link: "/categories/exercise-bicycles" },
-      { label: "E-bikes", link: "/categories/e-bikes" },
-      { label: "E-scooters", link: "/categories/e-scooters" },
-      { label: "Scooters", link: "/categories/scooters" },
-      { label: "E-skateboards", link: "/categories/e-skateboards" },
-      { label: "Skateboards", link: "/categories/skateboards" },
-      { label: "Hoverboards", link: "/categories/hoverboards" },
-      { label: "Racing", link: "/categories/racing" },
-      { label: "Rentals/Mobility", link: "/categories/rentals-mobility" },
-      { label: "Accessories", link: "/categories/accessories" },
-      { label: "Apparel", link: "/categories/apparel" },
-      { label: "Jobs", link: "/categories/jobs" },
-      { label: "Nutrition", link: "/categories/nutrition" },
-      { label: "Parts", link: "/categories/parts" },
-      { label: "Supplies", link: "/categories/supplies" },
-      { label: "Tradeshows/Conventions", link: "/categories/tradeshows" },
-      { label: "Tools", link: "/categories/tools" },
-    ],
+    link: "/browse-products",
   },
+  { label: "My Orders", icon: <ShoppingCart size={18} />, link: "/my-orders" },
+  { label: "Wishlist", icon: <Star size={18} />, link: "/wishlist" },
+
+  // Selling Section
   {
-    label: "Products",
+    label: "My Listings",
     icon: <Package size={18} />,
-    link: "/products",
+    link: "/my-listings",
     subItems: [
-      { label: "Add New product", link: "/products/add" },
-      { label: "All Products", link: "/products/all" },
-      { label: "In House Products", link: "/products/inhouse" },
-      { label: "Bulk Import", link: "/products/bulk-import" },
-      { label: "Categories", link: "/products/categories" },
-      { label: "Category based discount", link: "/products/category-discount" },
-      { label: "Attributes", link: "/products/attributes" },
-      { label: "Colors", link: "/products/colors" },
-      { label: "Product Reviews", link: "/products/reviews" },
-      {
-        label: "Seller products",
-        link: "/products/seller-products",
-        subItems: [
-          {
-            label: "Physical Products",
-            link: "/products/seller-products/physical",
-          },
-          {
-            label: "Digital products",
-            link: "/products/seller-products/digital",
-          },
-        ],
-      },
-      {
-        label: "Size guide",
-        link: "/products/size-guide",
-        subItems: [
-          { label: "Size chart", link: "/products/size-guide/size-chart" },
-        ],
-      },
-      {
-        label: "Brands",
-        link: "/products/brands",
-        subItems: [
-          { label: "All Brands", link: "/products/brands/all" },
-          { label: "Brand Bulk Import", link: "/products/brands/bulk-import" },
-        ],
-      },
+      { label: "Add New Product", link: "/my-listings/add" },
+      { label: "All My Products", link: "/my-listings/all" },
+      { label: "Sales History", link: "/my-listings/sales-history" },
     ],
   },
-  { label: "Orders", icon: <ShoppingCart size={18} />, link: "/orders" },
+
+  // Payments & Wallet
   {
-    label: "Payments",
+    label: "My Wallet",
     icon: <CreditCard size={18} />,
-    link: "/payments",
+    link: "/wallet",
     subItems: [
-      { label: "Payment History", link: "/payments/history" },
-      { label: "Payment Method", link: "/payments/method" },
+      { label: "Wallet Balance", link: "/wallet/balance" },
+      { label: "Payment History", link: "/wallet/payment-history" },
+      { label: "Withdraw Funds", link: "/wallet/withdraw" },
     ],
   },
-  {
-    label: "Sales",
-    icon: <CreditCard size={18} />,
-    link: "/sales",
-    subItems: [
-      { label: "All Orders", link: "/sales/all-orders" },
-      { label: "Inhouse Orders", link: "/sales/inhouse-orders" },
-      { label: "Seller Orders", link: "/sales/seller-orders" },
-    ],
-  },
-  {
-    label: "Customers",
-    icon: <Users size={18} />,
-    link: "/customers",
-    subItems: [
-      { label: "Customer list", link: "/customers/list" },
-      { label: "Classified products", link: "/customers/classified-products" },
-      { label: "Classified packages", link: "/customers/classified-packages" },
-    ],
-  },
-  {
-    label: "Sellers",
-    icon: <Store size={18} />,
-    link: "/sellers",
-    subItems: [
-      { label: "All sellers", link: "/sellers/all" },
-      { label: "Payout", link: "/sellers/payout" },
-      { label: "Payout Requests", link: "/sellers/payout-requests" },
-      { label: "Seller Commission", link: "/sellers/commission" },
-      { label: "Seller Packages", link: "/sellers/packages" },
-      { label: "Seller verification form", link: "/sellers/verification" },
-    ],
-  },
-  {
-    label: "Reports",
-    icon: <BarChart size={18} />,
-    link: "/reports",
-    subItems: [
-      { label: "In house product sale", link: "/reports/inhouse-product-sale" },
-      { label: "Seller products sale", link: "/reports/seller-products-sale" },
-      { label: "Products stock", link: "/reports/products-stock" },
-      { label: "Products wish list", link: "/reports/wishlist" },
-      { label: "User searches", link: "/reports/user-searches" },
-      { label: "Commission history", link: "/reports/commission-history" },
-      { label: "Wallet recharge history", link: "/reports/wallet-recharge" },
-    ],
-  },
-  {
-    label: "Marketing",
-    icon: <Megaphone size={18} />,
-    link: "/marketing",
-    subItems: [
-      { label: "Flash deals", link: "/marketing/flash-deals" },
-      { label: "Dynamic pop-up", link: "/marketing/dynamic-popup" },
-      { label: "Custom Alert", link: "/marketing/custom-alert" },
-      { label: "Newsletters", link: "/marketing/newsletters" },
-      { label: "Coupon", link: "/marketing/coupon" },
-    ],
-  },
-  {
-    label: "Affiliate system",
-    icon: <ChartNoAxesCombined size={18} />,
-    link: "/affiliate-system",
-    subItems: [
-      {
-        label: "Affiliate registration form",
-        link: "/affiliate-system/registration",
-      },
-      {
-        label: "Affiliate congratulations",
-        link: "/affiliate-system/congratulations",
-      },
-      { label: "Affiliate users", link: "/affiliate-system/users" },
-      { label: "Referral users", link: "/affiliate-system/referrals" },
-      {
-        label: "Affiliate withdrawals request",
-        link: "/affiliate-system/withdrawals",
-      },
-      { label: "Affiliate logs", link: "/affiliate-system/logs" },
-    ],
-  },
-  {
-    label: "Subscription",
-    icon: <CreditCard size={18} />,
-    link: "/subscription",
-  },
+
+  // Communication
   { label: "Messages", icon: <Mail size={18} />, link: "/messages" },
+  { label: "Notifications", icon: <Bell size={18} />, link: "/notifications" },
+
+  // Support
   {
-    label: "Advertisement",
-    icon: <Megaphone size={18} />,
-    link: "/advertisement",
-  },
-  {
-    label: "Classified Ad",
+    label: "Help & Support",
     icon: <FileSearch size={18} />,
-    link: "/classified-ad",
+    link: "/help-support",
   },
-  {
-    label: "Auctions",
-    icon: <Gavel size={18} />,
-    link: "/auctions",
-    subItems: [
-      { label: "Add New Auction Product", link: "/auctions/add" },
-      { label: "All Auction Products", link: "/auctions/all" },
-      { label: "Inhouse Auction Products", link: "/auctions/inhouse" },
-      { label: "Seller Auction Products", link: "/auctions/seller" },
-      { label: "Products Auction Orders", link: "/auctions/orders" },
-    ],
-  },
-  {
-    label: "Project Bidding",
-    icon: <Briefcase size={18} />,
-    link: "/project-bidding",
-  },
-  { label: "RFQ", icon: <FileSearch size={18} />, link: "/rfq" },
-  {
-    label: "Rating & Reviews",
-    icon: <Star size={18} />,
-    link: "/rating-reviews",
-  },
-  { label: "Shipping", icon: <Truck size={18} />, link: "/shipping" },
-  { label: "Tax", icon: <Receipt size={18} />, link: "/tax" },
   { label: "Settings", icon: <Settings size={18} />, link: "/settings" },
-  { label: "Go to Store", icon: <Store size={18} />, link: "/" },
+
+  // Logout
+  { label: "Sign Out", icon: <X size={18} />, link: "/logout" },
 ];
 
 export default function Sidebar() {
