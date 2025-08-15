@@ -266,7 +266,7 @@ export default function Sidebar() {
             />
             <div className="text-start">
               <p className="font-semibold text-sm">John Doe</p>
-              <span className="text-xs text-gray-300">Admin</span>
+              <span className="text-xs text-gray-300">Customer</span>
             </div>
           </div>
           <SideProfilePopUp />

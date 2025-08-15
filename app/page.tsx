@@ -84,9 +84,9 @@ const Page = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen">
+      <div className="">
         {/* Page Header */}
-        <h1 className="text-3xl font-semibold text-gray-800 mb-8">
+        <h1 className="text-3xl font-semibold text-gray-800 mb-6">
           Customer Dashboard
         </h1>
 
