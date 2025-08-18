@@ -246,6 +246,7 @@ export default function Sidebar() {
         </div>
 
         {/* Logo */}
+        <Link href={'/'}>
         <Image
           src="/icons/white-logo-latest.png"
           width={120}
@@ -253,10 +254,11 @@ export default function Sidebar() {
           alt="Logo"
           className="w-fit h-fit cursor-pointer mb-2 !mx-auto"
         />
-
+        </Link>
         {/* User Profile */}
-        <div className="w-full flex justify-between items-center border-b border-gray-400 pb-4 mb-4">
-          <div className="flex gap-2 items-center">
+        <div className="w-full  flex justify-between items-center border-b border-gray-400 pb-4 mb-4">
+          <Link href={'/profile'}>
+          <div className="flex cursor-pointer gap-2 items-center">
             <Image
               src="/icons/profile-active.jpg"
               width={35}
@@ -269,6 +271,7 @@ export default function Sidebar() {
               <span className="text-xs text-gray-300">Customer</span>
             </div>
           </div>
+          </Link>
           <SideProfilePopUp />
           {/* <EllipsisVertical className="w-5 h-[25px] cursor-pointer text-gray-300" /> */}
         </div>
