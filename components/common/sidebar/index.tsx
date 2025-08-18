@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import SideProfilePopUp from "../../popup/side-profile-popup";
+import { useUser } from "@/components/profileContext/profile-content";
 
 interface MenuItem {
   label: string;
@@ -208,6 +209,7 @@ export default function Sidebar() {
       });
     }
   }, [pathname]);
+const {profileImage} = useUser()
 
   return (
     <>
@@ -218,7 +220,7 @@ export default function Sidebar() {
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-md bg-transparent text-white"
           >
-            <Menu size={24} />
+            <Menu size={24}/>
           </button>
         )}
       </div>
@@ -260,11 +262,11 @@ export default function Sidebar() {
           <Link href={'/profile'}>
           <div className="flex cursor-pointer gap-2 items-center">
             <Image
-              src="/icons/profile-active.jpg"
+              src={profileImage || "/icons/profile-active.jpg"}
               width={35}
               height={35}
               alt="Logo"
-              className="w-[35px] h-[35px] rounded-full cursor-pointer"
+              className="w-[35px] h-[35px] object-cover rounded-full cursor-pointer"
             />
             <div className="text-start">
               <p className="font-semibold text-sm">John Doe</p>

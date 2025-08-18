@@ -16,9 +16,9 @@ import {
   FiActivity,
 } from "react-icons/fi";
 import DashboardLayout from "@/components/layout/dashboard-layout";
+import { useUser } from "@/components/profileContext/profile-content";
 
 export default function CustomerProfile() {
-  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "John Doe",
@@ -34,6 +34,11 @@ export default function CustomerProfile() {
     favoriteBike: "Mountain Bike",
     experience: "Intermediate",
   });
+
+  
+   
+  
+  const { profileImage, setProfileImage } = useUser();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

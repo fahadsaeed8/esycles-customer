@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/components/layout/dashboard-layout";
+import { useUser } from "@/components/profileContext/profile-content";
 import { useState } from "react";
 import {
   FiUser,
@@ -63,6 +64,7 @@ export default function Settings() {
     alert("Settings updated successfully!");
   };
 
+  const {profileImage} = useUser()
   return (
     <DashboardLayout>
       <div className=" mx-auto bg-white rounded-lg shadow-lg p-6">
@@ -83,7 +85,7 @@ export default function Settings() {
                 <div className="overflow-hidden rounded-full w-full h-full">
                   {formData.profilePicture ? (
                     <img
-                      src={formData.profilePicture}
+                      src={profileImage || "/icons/profile-active.jpg"}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
@@ -95,7 +97,7 @@ export default function Settings() {
                 </div>
 
                 <label className="absolute bottom-0 right-0 bg-[#f59e0b] p-1 rounded-full cursor-pointer z-10">
-                  <FiCamera className="text-white text-sm" />
+                  <FiCamera className="text-white text-sm cursor-pointer" />
                   <input
                     type="file"
                     accept="image/*"

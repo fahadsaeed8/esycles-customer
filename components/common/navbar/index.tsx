@@ -87,7 +87,7 @@ export default function Navbar() {
 
       <div className="w-full bg-[#283a52] shadow-md px-4 py-2 flex items-center justify-between text-white relative">
         {/* Left Section - Mobile Search Button */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-7 lg:pl-0">
           <h3 className="text-base cursor-pointer lg:text-lg font-medium text-white">
             <Link href={'/'}>
             Dashboard
