@@ -3,6 +3,7 @@
 import React from "react";
 import { ChevronDown, LogOut, Settings } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"; // 👈 Add this
 import ReactPopUp from "../common/react-popup";
 
 const ProfilePopUp = () => {
@@ -10,11 +11,13 @@ const ProfilePopUp = () => {
     {
       id: 1,
       message: "Settings",
+      link: "/settings", // 👈 add link here
       avatar: <Settings size={16} className="text-white" />,
     },
     {
       id: 2,
       message: "Log out",
+      link: "/logout", // you can adjust this later
       avatar: <LogOut size={16} className="text-white" />,
     },
   ];
@@ -26,10 +29,11 @@ const ProfilePopUp = () => {
       </div>
       <div>
         {notifications.map((msg) => (
-          <div
-            onClick={close}
+          <Link
+            href={msg.link} // 👈 Link navigate karega
             key={msg.id}
-            className={`flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300`}
+            onClick={close} // close popup after navigation
+            className="flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300"
           >
             <div className="min-w-10 max-w-10 min-h-10 max-h-10 bg-gray-600 rounded-full flex justify-center items-center">
               {msg.avatar}
@@ -39,7 +43,7 @@ const ProfilePopUp = () => {
                 <span className="font-medium">{msg.message}</span>
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div className="px-4 py-2 cursor-pointer text-center text-sm text-gray-700">

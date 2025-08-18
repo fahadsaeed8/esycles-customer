@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { EllipsisVertical, List, Lock, LogOut, Settings } from "lucide-react";
-import Image from "next/image";
+import { EllipsisVertical, List, Lock, Settings } from "lucide-react";
+import Link from "next/link";
 import ReactPopUp from "../common/react-popup";
 
 const SideProfilePopUp = () => {
@@ -11,16 +11,19 @@ const SideProfilePopUp = () => {
       id: 1,
       message: "Account Settings",
       avatar: <Settings size={16} className="text-white" />,
+      link: "/settings",
     },
     {
       id: 2,
       message: "Change Password",
       avatar: <Lock size={16} className="text-white" />,
+      link: "/settings",
     },
     {
       id: 3,
       message: "TO Do List",
       avatar: <List size={16} className="text-white" />,
+      link: "/todo-list",
     },
   ];
 
@@ -28,10 +31,11 @@ const SideProfilePopUp = () => {
     <div className="w-[240px] rounded-[4px] shadow-lg bg-white border border-gray-200 mt-4 overflow-hidden">
       <div>
         {notifications.map((msg) => (
-          <div
-            onClick={close}
+          <Link
             key={msg.id}
-            className={`flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300`}
+            href={msg.link}
+            onClick={close}
+            className="flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300"
           >
             <div className="min-w-10 max-w-10 min-h-10 max-h-10 bg-gray-600 rounded-full flex justify-center items-center">
               {msg.avatar}
@@ -41,7 +45,7 @@ const SideProfilePopUp = () => {
                 <span className="font-medium">{msg.message}</span>
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
