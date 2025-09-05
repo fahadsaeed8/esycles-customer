@@ -1,6 +1,8 @@
-"use client";
+'use client'
 
 import { useState, useRef, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   FiUser,
   FiMail,
@@ -9,7 +11,6 @@ import {
   FiCamera,
   FiCalendar,
   FiGlobe,
-  FiMoon,
   FiAward,
   FiShoppingBag,
   FiHeart,
@@ -40,6 +41,35 @@ export default function CustomerProfile() {
   
   const { profileImage, setProfileImage } = useUser();
 
+  const formik = useFormik({
+    initialValues: {
+      fullName: "John Doe",
+      email: "john@gmail.com",
+      phone: "+1 234 567 890",
+      address: "123 Bike Street, NY",
+      dob: "2000-05-13",
+      gender: "Male",
+      bio: "Love cycling and exploring new routes.",
+      currency: "USD",
+      language: "English",
+      darkMode: false,
+      favoriteBike: "Mountain Bike",
+      experience: "Intermediate",
+    },
+    validationSchema: Yup.object({
+      fullName: Yup.string().required("Full Name is required"),
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      phone: Yup.string().required("Phone is required"),
+      address: Yup.string().required("Address is required"),
+      dob: Yup.date().required("Date of Birth is required"),
+      gender: Yup.string().required("Gender is required"),
+    }),
+    onSubmit: (values) => {
+      console.log("✅ Updated Profile Data:", values);
+      setIsEditing(false);
+    },
+  });
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -48,6 +78,7 @@ export default function CustomerProfile() {
       reader.readAsDataURL(file);
     }
   };
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -171,77 +202,78 @@ export default function CustomerProfile() {
       </div>
 
       {/* Modal for Edit */}
-      {isEditing && (
+       {isEditing && (
         <Modal onClose={() => setIsEditing(false)}>
           <form
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             className="bg-white p-6 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             <AnimatedInput
               name="fullName"
-              value={formData.fullName}
+              value={formik.values.fullName}
               placeholder="Full Name"
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
+            {formik.touched.fullName && formik.errors.fullName && (
+              <p className="text-red-500 text-sm">{formik.errors.fullName}</p>
+            )}
+
             <AnimatedInput
               name="email"
               type="email"
-              value={formData.email}
+              value={formik.values.email}
               placeholder="Email"
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
+            {formik.touched.email && formik.errors.email && (
+              <p className="text-red-500 text-sm">{formik.errors.email}</p>
+            )}
+
             <AnimatedInput
               name="phone"
-              value={formData.phone}
+              value={formik.values.phone}
               placeholder="Phone"
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
             <AnimatedInput
               name="address"
-              value={formData.address}
+              value={formik.values.address}
               placeholder="Address"
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
             <AnimatedInput
               name="dob"
               type="date"
-              value={formData.dob}
+              value={formik.values.dob}
               placeholder="Date of Birth"
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
+
             <SelectInput
               name="gender"
-              value={formData.gender}
+              value={formik.values.gender}
               options={["Male", "Female", "Other"]}
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
             <SelectInput
               name="language"
-              value={formData.language}
+              value={formik.values.language}
               options={["English", "Spanish", "French"]}
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
             <SelectInput
               name="favoriteBike"
-              value={formData.favoriteBike}
+              value={formik.values.favoriteBike}
               options={["Mountain Bike", "Road Bike", "Hybrid Bike"]}
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
             <SelectInput
               name="experience"
-              value={formData.experience}
+              value={formik.values.experience}
               options={["Beginner", "Intermediate", "Expert"]}
-              onChange={handleChange}
+              onChange={formik.handleChange}
             />
-            {/* <div className="flex items-center gap-2 md:col-span-2">
-              <input
-                type="checkbox"
-                name="darkMode"
-                checked={formData.darkMode}
-                onChange={handleChange}
-              />
-              <label>Enable Dark Mode</label>
-            </div> */}
+
             <div className="flex gap-4 md:col-span-2">
               <button
                 type="submit"

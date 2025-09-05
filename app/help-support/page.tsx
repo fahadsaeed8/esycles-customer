@@ -3,6 +3,8 @@
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp, FiMail, FiPhone, FiHelpCircle } from "react-icons/fi";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 interface FAQ {
   question: string;
@@ -34,6 +36,13 @@ export default function HelpSupport() {
         "Go to your orders, select the item, and click 'Request Refund'. Our support team will assist you.",
     },
   ];
+
+  // ✅ Validation schema
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
+    message: Yup.string().required("Message is required"),
+  });
 
   return (
     <DashboardLayout>
@@ -69,7 +78,9 @@ export default function HelpSupport() {
 
         {/* FAQ Section */}
         <div className="mb-10">
-          <h2 className="text-xl font-bold shadow-lg p-4 rounded-t-lg bg-gradient-to-r from-[#f8a649] via-[#f59e0b] to-[#d97706] text-white">Frequently Asked Questions</h2>
+          <h2 className="text-xl font-bold shadow-lg p-4 rounded-t-lg bg-gradient-to-r from-[#f8a649] via-[#f59e0b] to-[#d97706] text-white">
+            Frequently Asked Questions
+          </h2>
           <div className="bg-white divide-y divide-gray-300 rounded-b-lg">
             {faqs.map((faq, index) => (
               <div key={index} className="p-4 hover:bg-orange-50">
@@ -92,41 +103,74 @@ export default function HelpSupport() {
           </div>
         </div>
 
-        {/* Contact Form */}
+        {/* Contact Form with Formik */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-bold mb-4">Contact Support</h2>
-          <form className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Your Name</label>
-              <input
-                type="text"
-                className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
-                placeholder="Enter your name"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Your Email</label>
-              <input
-                type="email"
-                className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Message</label>
-              <textarea
-                className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
-                rows={4}
-                placeholder="Write your message here..."
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="cursor-pointer bg-gradient-to-r from-[#f8a649] via-[#f59e0b] to-[#d97706] text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
-            >
-              Send Message
-            </button>
-          </form>
+          <Formik
+            initialValues={{ name: "", email: "", message: "" }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { resetForm }) => {
+              console.log("Form Data:", values);
+              resetForm();
+            }}
+          >
+            {() => (
+              <Form className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Your Name</label>
+                  <Field
+                    type="text"
+                    name="name"
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
+                    placeholder="Enter your name"
+                  />
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Your Email</label>
+                  <Field
+                    type="email"
+                    name="email"
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
+                    placeholder="Enter your email"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Message</label>
+                  <Field
+                    as="textarea"
+                    name="message"
+                    rows={4}
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:shadow-[0_0_5px_rgba(0,0,0,0.1)] focus:shadow-green-700 outline-none focus:boroder-[1px] focus:border-green-500 transition-all duration-300 ease-in-out"
+                    placeholder="Write your message here..."
+                  />
+                  <ErrorMessage
+                    name="message"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="cursor-pointer bg-gradient-to-r from-[#f8a649] via-[#f59e0b] to-[#d97706] text-white px-6 py-2 rounded-lg hover:opacity-90 transition"
+                >
+                  Send Message
+                </button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </DashboardLayout>

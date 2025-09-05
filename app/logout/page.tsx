@@ -25,6 +25,7 @@ const SignIn = () => {
       if (values.email && values.password) {
         router.push("/");
       }
+      console.log(values)
     },
   });
 
