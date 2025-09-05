@@ -19,6 +19,9 @@ import {
   Menu,
   X,
   Bell,
+  UserSquare,
+  MessageSquare,
+  BarChart2,
 } from "lucide-react";
 import Image from "next/image";
 import SideProfilePopUp from "../../popup/side-profile-popup";
@@ -72,6 +75,95 @@ const menuItems: MenuItem[] = [
       { label: "Withdraw Funds", link: "/wallet/withdraw" },
     ],
   },
+
+  {
+    label: "Personal Ad",
+    icon: <UserSquare size={18} />, // lucide-react icon for personal/user focus
+    link: "/personal-ads",
+    subItems: [
+      {
+        label: "Classified Ads",
+        link: "/personal-ads/classified", // manage classified ads
+      },
+      // {
+      //   label: "Auction Ads",
+      //   link: "/personal-ads/auctions", // manage auction-style ads
+      // },
+      {
+        label: "Ad Duration",
+        link: "/personal-ads/duration", // 1, 3, 7, 15, 30, 60, 90 days options
+      },
+      // {
+      //   label: "Pricing & Description",
+      //   link: "/personal-ads/pricing", // edit/update prices & descriptions
+      // },
+      // {
+      //   label: "Expired Ads",
+      //   link: "/personal-ads/expired", // renew or delete expired ads
+      // },
+    ],
+  },
+  {
+    label: "Buy & Sell Activity",
+    icon: <ShoppingCart size={18} />, // lucide-react shopping cart icon
+    link: "/activity",
+    subItems: [
+      {
+        label: "Selling Activity",
+        link: "/activity/selling", // active ads, bids received, watchlists
+      },
+      {
+        label: "Buying Activity",
+        link: "/activity/buying", // bids placed, offers made, purchases
+      },
+      {
+        label: "Transaction History",
+        link: "/activity/transactions", // full record of sales & purchases
+      },
+      // {
+      //   label: "Communications",
+      //   link: "/activity/communications", // related chats/messages
+      // },
+    ],
+  },
+  {
+    label: "Communication",
+    icon: <MessageSquare size={18} />, // lucide-react messaging icon
+    link: "/communication",
+    subItems: [
+      {
+        label: "Messaging",
+        link: "/communication/messaging", // direct chat with other users
+      },
+      {
+        label: "Inquiries & Offers",
+        link: "/communication/inquiries", // respond to inquiries, counter-offers, bulk deals
+      },
+      {
+        label: "Notifications",
+        link: "/communication/notifications", // bid updates, ad expiry, responses
+      },
+    ],
+  },
+{
+  label: "Ad Performance",
+  icon: <BarChart2 size={18} />, // lucide-react analytics icon
+  link: "/ad-performance",
+  // subItems: [
+  //   {
+  //     label: "Analytics",
+  //     link: "/ad-performance/analytics", // views, clicks, inquiries per ad
+  //   },
+  //   {
+  //     label: "Promotions",
+  //     link: "/ad-performance/promotions", // highlight, top placement, racing page visibility
+  //   },
+  //   {
+  //     label: "Bidding Insights",
+  //     link: "/ad-performance/bidding-insights", // competitor offers, bidding activity
+  //   },
+  // ],
+},
 
   // Communication
   { label: "Messages", icon: <Mail size={18} />, link: "/messages" },
@@ -209,7 +301,7 @@ export default function Sidebar() {
       });
     }
   }, [pathname]);
-const {profileImage} = useUser()
+  const { profileImage } = useUser();
 
   return (
     <>
@@ -220,7 +312,7 @@ const {profileImage} = useUser()
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-md bg-transparent text-white"
           >
-            <Menu size={24}/>
+            <Menu size={24} />
           </button>
         )}
       </div>
@@ -248,31 +340,31 @@ const {profileImage} = useUser()
         </div>
 
         {/* Logo */}
-        <Link href={'/'}>
-        <Image
-          src="/icons/white-logo-latest.png"
-          width={120}
-          height={60}
-          alt="Logo"
-          className="w-fit h-fit cursor-pointer mb-2 !mx-auto"
-        />
+        <Link href={"/"}>
+          <Image
+            src="/icons/white-logo-latest.png"
+            width={120}
+            height={60}
+            alt="Logo"
+            className="w-fit h-fit cursor-pointer mb-2 !mx-auto"
+          />
         </Link>
         {/* User Profile */}
         <div className="w-full  flex justify-between items-center border-b border-gray-400 pb-4 mb-4">
-          <Link href={'/profile'}>
-          <div className="flex cursor-pointer gap-2 items-center">
-            <Image
-              src={profileImage || "/icons/profile-active.jpg"}
-              width={35}
-              height={35}
-              alt="Logo"
-              className="w-[35px] h-[35px] object-cover rounded-full cursor-pointer"
-            />
-            <div className="text-start">
-              <p className="font-semibold text-sm">John Doe</p>
-              <span className="text-xs text-gray-300">Customer</span>
+          <Link href={"/profile"}>
+            <div className="flex cursor-pointer gap-2 items-center">
+              <Image
+                src={profileImage || "/icons/profile-active.jpg"}
+                width={35}
+                height={35}
+                alt="Logo"
+                className="w-[35px] h-[35px] object-cover rounded-full cursor-pointer"
+              />
+              <div className="text-start">
+                <p className="font-semibold text-sm">John Doe</p>
+                <span className="text-xs text-gray-300">Customer</span>
+              </div>
             </div>
-          </div>
           </Link>
           <SideProfilePopUp />
           {/* <EllipsisVertical className="w-5 h-[25px] cursor-pointer text-gray-300" /> */}
