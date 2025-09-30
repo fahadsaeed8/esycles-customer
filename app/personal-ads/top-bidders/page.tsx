@@ -4,7 +4,7 @@ import Loader from "@/components/common/loader";
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { getHigestBidderAPI, sellerTriggerBidAPI } from "@/services/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface Bidder {
@@ -22,8 +22,8 @@ interface Bidder {
 }
 
 export default function AuctionFallbackUI() {
-  const params = useParams();
-  const auctionId = params.id as string;
+  const params = useSearchParams();
+  const auctionId = params.get("id");
 
   const queryClient = useQueryClient();
 

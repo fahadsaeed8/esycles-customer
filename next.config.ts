@@ -2,7 +2,7 @@
 const nextConfig = {
   trailingSlash: true,
   skipMiddlewareUrlNormalize: true,
-  // output: "export",
+  output: "export",
   images: {
     unoptimized: true,
     domains: ["noreplyxyz.esycles.com"],
