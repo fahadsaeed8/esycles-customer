@@ -36,30 +36,28 @@ const NotificationPopUp = () => {
         Notifications
       </div>
       <div>
-  {notifications.map((msg) => (
-    <div
-      key={msg.id}
-      className="flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300"
-    >
-      <div className="min-w-10 max-w-10 min-h-10 max-h-10 bg-gray-600 rounded-full flex justify-center items-center">
-        {msg.avatar}
+        {notifications.map((msg) => (
+          <div
+            key={msg.id}
+            className="flex items-center gap-3 px-4 py-2 transition-colors duration-150 cursor-pointer border-b border-b-gray-300 hover:bg-gray-300"
+          >
+            <div className="min-w-10 max-w-10 min-h-10 max-h-10 bg-gray-600 rounded-full flex justify-center items-center">
+              {msg.avatar}
+            </div>
+            <div className="flex flex-col text-xs">
+              {msg.message && (
+                <span className="font-medium">{msg.message}</span>
+              )}
+              <span className="text-gray-500 font-normal">
+                {msg.description}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex flex-col text-xs">
-        {msg.message && (
-          <span className="font-medium">{msg.message}</span>
-        )}
-        <span className="text-gray-500 font-normal">
-          {msg.description}
-        </span>
-      </div>
-    </div>
-  ))}
-</div>
 
       <div className="px-4 py-2 cursor-pointer text-center text-sm text-gray-700">
-        <Link href={'/notifications'}>
-        See all notifications
-        </Link>
+        <Link href={"/notifications"}>See all notifications</Link>
       </div>
     </div>
   );

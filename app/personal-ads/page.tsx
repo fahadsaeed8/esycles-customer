@@ -33,7 +33,7 @@ type Ad = {
   adType: "classified" | "auction";
 };
 
-export default function SellerWishListPage() {
+export default function SellerAdsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const highlightId = searchParams.get("id");
@@ -53,7 +53,7 @@ export default function SellerWishListPage() {
     isError: classifiedError,
   } = useQuery({
     queryKey: ["classifiedAds", activeTab],
-    queryFn: () => getClassifiedAdsAPI("Draft"),
+    queryFn: () => getClassifiedAdsAPI("Published", "Accepted"),
     enabled: activeTab === "classified",
   });
 
@@ -64,7 +64,7 @@ export default function SellerWishListPage() {
     isError: auctionError,
   } = useQuery({
     queryKey: ["auctionAds", activeTab],
-    queryFn: () => getAuctionAdsAPI("Draft"),
+    queryFn: () => getAuctionAdsAPI("Published", "Accepted"),
     enabled: activeTab === "auction",
   });
 
@@ -73,8 +73,6 @@ export default function SellerWishListPage() {
   const loading =
     activeTab === "classified" ? classifiedLoading : auctionLoading;
   const error = activeTab === "classified" ? classifiedError : auctionError;
-
-  console.log("adwishlist", ads);
 
   const handleClick = (ad: Ad) => {
     if (activeTab === "classified") {

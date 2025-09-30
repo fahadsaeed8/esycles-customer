@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  trailingSlash: true,
+  skipMiddlewareUrlNormalize: true,
+  // output: "export",
+  images: {
+    unoptimized: true,
+    domains: ["noreplyxyz.esycles.com"],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

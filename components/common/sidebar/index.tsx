@@ -26,6 +26,8 @@ import {
 import Image from "next/image";
 import SideProfilePopUp from "../../popup/side-profile-popup";
 import { useUser } from "@/components/profileContext/profile-content";
+import { useQueryClient } from "@tanstack/react-query";
+import { capitalizeFirstWord } from "@/utils/capitalizeFirstWord";
 
 interface MenuItem {
   label: string;
@@ -80,28 +82,6 @@ const menuItems: MenuItem[] = [
     label: "Personal Ad",
     icon: <UserSquare size={18} />, // lucide-react icon for personal/user focus
     link: "/personal-ads",
-    subItems: [
-      {
-        label: "Classified Ads",
-        link: "/personal-ads/classified", // manage classified ads
-      },
-      // {
-      //   label: "Auction Ads",
-      //   link: "/personal-ads/auctions", // manage auction-style ads
-      // },
-      {
-        label: "Ad Duration",
-        link: "/personal-ads/duration", // 1, 3, 7, 15, 30, 60, 90 days options
-      },
-      // {
-      //   label: "Pricing & Description",
-      //   link: "/personal-ads/pricing", // edit/update prices & descriptions
-      // },
-      // {
-      //   label: "Expired Ads",
-      //   link: "/personal-ads/expired", // renew or delete expired ads
-      // },
-    ],
   },
   {
     label: "Buy & Sell Activity",
@@ -145,25 +125,25 @@ const menuItems: MenuItem[] = [
       },
     ],
   },
-{
-  label: "Ad Performance",
-  icon: <BarChart2 size={18} />, // lucide-react analytics icon
-  link: "/ad-performance",
-  // subItems: [
-  //   {
-  //     label: "Analytics",
-  //     link: "/ad-performance/analytics", // views, clicks, inquiries per ad
-  //   },
-  //   {
-  //     label: "Promotions",
-  //     link: "/ad-performance/promotions", // highlight, top placement, racing page visibility
-  //   },
-  //   {
-  //     label: "Bidding Insights",
-  //     link: "/ad-performance/bidding-insights", // competitor offers, bidding activity
-  //   },
-  // ],
-},
+  {
+    label: "Ad Performance",
+    icon: <BarChart2 size={18} />, // lucide-react analytics icon
+    link: "/ad-performance",
+    // subItems: [
+    //   {
+    //     label: "Analytics",
+    //     link: "/ad-performance/analytics", // views, clicks, inquiries per ad
+    //   },
+    //   {
+    //     label: "Promotions",
+    //     link: "/ad-performance/promotions", // highlight, top placement, racing page visibility
+    //   },
+    //   {
+    //     label: "Bidding Insights",
+    //     link: "/ad-performance/bidding-insights", // competitor offers, bidding activity
+    //   },
+    // ],
+  },
 
   // Communication
   { label: "Messages", icon: <Mail size={18} />, link: "/messages" },
@@ -186,6 +166,10 @@ export default function Sidebar() {
   const [openDropdowns, setOpenDropdowns] = useState<string[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+
+  const userProfile: any = queryClient.getQueryData(["profile"]);
+  const userProfileData = userProfile?.user;
 
   const isActive = (link?: string) => {
     if (!link) return false;
@@ -352,17 +336,27 @@ export default function Sidebar() {
         {/* User Profile */}
         <div className="w-full  flex justify-between items-center border-b border-gray-400 pb-4 mb-4">
           <Link href={"/profile"}>
-            <div className="flex cursor-pointer gap-2 items-center">
-              <Image
-                src={profileImage || "/icons/profile-active.jpg"}
-                width={35}
-                height={35}
-                alt="Logo"
-                className="w-[35px] h-[35px] object-cover rounded-full cursor-pointer"
-              />
+            <div className="flex gap-2 items-center">
+              {userProfileData?.image ? (
+                <Image
+                  src={userProfileData?.image}
+                  width={35}
+                  height={35}
+                  alt="Logo"
+                  className="w-[40px] h-[40px] object-cover rounded-full cursor-pointer"
+                />
+              ) : (
+                <div className="w-[40px] h-[40px] flex items-center justify-center bg-blue-500 rounded-full">
+                  <User size={20} className="text-white" />
+                </div>
+              )}
               <div className="text-start">
-                <p className="font-semibold text-sm">John Doe</p>
-                <span className="text-xs text-gray-300">Customer</span>
+                <p className="font-semibold text-sm">
+                  {capitalizeFirstWord(userProfileData?.first_name)}
+                </p>
+                <span className="text-xs text-gray-300">
+                  {capitalizeFirstWord(userProfileData?.role)}
+                </span>
               </div>
             </div>
           </Link>
