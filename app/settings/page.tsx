@@ -29,17 +29,20 @@ const SettingsSchema = Yup.object().shape({
   currentPassword: Yup.string(),
   newPassword: Yup.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: Yup.string()
-  .required("Confirm Password is required")
-  .oneOf([Yup.ref("newPassword")], "Passwords must match"),
+    .required("Confirm Password is required")
+    .oneOf([Yup.ref("newPassword")], "Passwords must match"),
 });
 
 export default function Settings() {
   const { profileImage } = useUser();
   const [profilePicture, setProfilePicture] = useState(
-    "/icons/profile-active.jpg"
+    "/site-icons/profile-active.jpg"
   );
 
-  const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
+  const handleProfilePicChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: any
+  ) => {
     if (e.target.files && e.target.files[0]) {
       const fileURL = URL.createObjectURL(e.target.files[0]);
       setProfilePicture(fileURL);
@@ -60,7 +63,7 @@ export default function Settings() {
             fullName: "John Doe",
             email: "john@example.com",
             phone: "+123 456 7890",
-            profilePicture: "/icons/profile-active.jpg",
+            profilePicture: "/site-icons/profile-active.jpg",
             street: "123 Main St",
             city: "New York",
             state: "NY",
@@ -110,7 +113,9 @@ export default function Settings() {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => handleProfilePicChange(e, setFieldValue)}
+                        onChange={(e) =>
+                          handleProfilePicChange(e, setFieldValue)
+                        }
                         className="hidden"
                       />
                     </label>

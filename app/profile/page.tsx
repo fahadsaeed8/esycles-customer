@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
@@ -36,9 +36,6 @@ export default function CustomerProfile() {
     experience: "Intermediate",
   });
 
-  
-   
-  
   const { profileImage, setProfileImage } = useUser();
 
   const formik = useFormik({
@@ -79,7 +76,6 @@ export default function CustomerProfile() {
     }
   };
 
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -112,7 +108,7 @@ export default function CustomerProfile() {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img
-                  src={profileImage || "/icons/profile-active.jpg"}
+                  src={profileImage || "/site-icons/profile-active.jpg"}
                   alt="Profile"
                   className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-lg"
                 />
@@ -202,7 +198,7 @@ export default function CustomerProfile() {
       </div>
 
       {/* Modal for Edit */}
-       {isEditing && (
+      {isEditing && (
         <Modal onClose={() => setIsEditing(false)}>
           <form
             onSubmit={formik.handleSubmit}
