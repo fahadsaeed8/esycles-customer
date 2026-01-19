@@ -3,8 +3,8 @@ import "./globals.css";
 import { UserProvider } from "@/components/profileContext/profile-content";
 
 export const metadata: Metadata = {
-  title: "Esycles Customer",
-  description: "Esycles Customer",
+  title: "esycles Customer",
+  description: "esycles Customer",
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png" }],
     apple: [{ url: "/favicon.png", type: "image/png" }],
