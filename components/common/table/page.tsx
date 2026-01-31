@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Trash2 } from "lucide-react";
 
 // Generic column type
 interface Column<T> {
@@ -14,6 +14,8 @@ interface CommonTableProps<T extends Record<string, unknown>> {
   data: T[];
   highlightKey?: keyof T;
   accordion?: (row: T) => React.ReactNode;
+  onDelete?: (id: string) => void;
+  deleteKey?: keyof T;
 }
 
 const Table = <T extends Record<string, unknown>>({
@@ -21,6 +23,8 @@ const Table = <T extends Record<string, unknown>>({
   data,
   highlightKey,
   accordion,
+  onDelete,
+  deleteKey,
 }: CommonTableProps<T>) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -57,6 +61,7 @@ const Table = <T extends Record<string, unknown>>({
                       {col.label}
                     </th>
                   ))}
+                  {onDelete && <th className="w-12 px-4 py-3 sm:px-6 sm:py-3 text-center"></th>}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
@@ -112,12 +117,29 @@ const Table = <T extends Record<string, unknown>>({
                           )}
                         </td>
                       ))}
+                      {onDelete && deleteKey && (
+                        <td 
+                          className="px-4 py-4 sm:px-6 text-center align-middle"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const id = String(row[deleteKey]);
+                            onDelete(id);
+                          }}
+                        >
+                          <button
+                            title="Delete"
+                            className="text-gray-500 hover:text-red-600 cursor-pointer transition-colors duration-200 p-1 rounded hover:bg-red-50"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      )}
                     </tr>
 
                     {accordion && (
                       <tr>
                         <td
-                          colSpan={(columns.length || 0) + 1}
+                          colSpan={(columns.length || 0) + (onDelete ? 2 : 1)}
                           className="p-0 bg-gray-50"
                         >
                           <div

@@ -1,8 +1,10 @@
 "use client";
 
 import DashboardLayout from "@/components/layout/dashboard-layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSearch, FiEye, FiX } from "react-icons/fi";
+import { Trash2 } from "lucide-react";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 
 type Sale = {
   id: number;
@@ -15,7 +17,7 @@ type Sale = {
 
 export default function SalesHistory() {
   const [search, setSearch] = useState("");
-  const [sales] = useState<Sale[]>([
+  const initialSales: Sale[] = [
     {
       id: 1,
       productName: "Mountain Bike",
@@ -40,9 +42,35 @@ export default function SalesHistory() {
       status: "Cancelled",
       image: "/icons/cycle.png",
     },
-  ]);
+  ];
 
+  const [sales, setSales] = useState<Sale[]>(initialSales);
+  const [deletedSaleIds, setDeletedSaleIds] = useState<Set<number>>(new Set());
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
+
+  // Load deleted sale IDs from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("deletedSales");
+    if (stored) {
+      try {
+        const deletedIds = JSON.parse(stored);
+        setDeletedSaleIds(new Set(deletedIds));
+        setSales(initialSales.filter((s) => !deletedIds.includes(s.id)));
+      } catch (error) {
+        console.error("Error loading deleted sales from localStorage:", error);
+      }
+    }
+  }, []);
+
+  // Handle delete action
+  const handleDelete = (id: number) => {
+    const newDeletedIds = new Set([...deletedSaleIds, id]);
+    setDeletedSaleIds(newDeletedIds);
+    setSales(sales.filter((s) => s.id !== id));
+    
+    // Save to localStorage
+    localStorage.setItem("deletedSales", JSON.stringify(Array.from(newDeletedIds)));
+  };
 
   const filteredSales = sales.filter((sale) =>
     sale.productName.toLowerCase().includes(search.toLowerCase())
@@ -79,6 +107,7 @@ export default function SalesHistory() {
           <th className="p-3">Price</th>
           <th className="p-3">Status</th>
           <th className="p-3">Action</th>
+          <th className="p-3 w-12"></th>
         </tr>
       </thead>
       <tbody>
@@ -92,7 +121,7 @@ export default function SalesHistory() {
               />
               {sale.productName}
             </td>
-            <td className="p-3">{sale.date}</td>
+            <td className="p-3">{formatDateToMDY(sale.date)}</td>
             <td className="p-3">${sale.price}</td>
             <td className="p-3">
               <span
@@ -113,6 +142,15 @@ export default function SalesHistory() {
                 className="flex items-center cursor-pointer gap-1 text-[#f59e0b] hover:text-[#d97706] font-medium"
               >
                 <FiEye /> View
+              </button>
+            </td>
+            <td className="p-3 text-center">
+              <button
+                onClick={() => handleDelete(sale.id)}
+                title="Delete"
+                className="text-gray-500 hover:text-red-600 cursor-pointer transition-colors duration-200 p-1 rounded hover:bg-red-50"
+              >
+                <Trash2 size={18} />
               </button>
             </td>
           </tr>
@@ -140,7 +178,7 @@ export default function SalesHistory() {
               <strong>Product:</strong> {selectedSale.productName}
             </p>
             <p>
-              <strong>Date:</strong> {selectedSale.date}
+              <strong>Date:</strong> {formatDateToMDY(selectedSale.date)}
             </p>
             <p>
               <strong>Price:</strong> ${selectedSale.price}

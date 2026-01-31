@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "../components/layout/dashboard-layout";
 import { Package, Star, CreditCard, ShoppingCart, Mail } from "lucide-react";
 import Table from "@/components/common/table/page";
+import { formatAnyDateToMDY } from "@/utils/dateFormatter";
 
 const Page = () => {
   const stats = [
@@ -54,26 +56,53 @@ const Page = () => {
     status: string;
   };
 
-  const products: Product[] = [
+  const initialProducts: Product[] = [
     {
       orderId: "#0012",
       product: "Mountain Bike",
-      date: "Aug 12, 2025",
+      date: formatAnyDateToMDY("Aug 12, 2025"),
       status: "Delivered",
     },
     {
       orderId: "#0011",
       product: "Helmet",
-      date: "Aug 10, 2025",
+      date: formatAnyDateToMDY("Aug 10, 2025"),
       status: "Pending",
     },
     {
       orderId: "#0010",
       product: "Electric Scooter",
-      date: "Aug 8, 2025",
+      date: formatAnyDateToMDY("Aug 8, 2025"),
       status: "Cancelled",
     },
   ];
+
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [deletedOrderIds, setDeletedOrderIds] = useState<Set<string>>(new Set());
+
+  // Load deleted order IDs from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("deletedOrders");
+    if (stored) {
+      try {
+        const deletedIds = JSON.parse(stored);
+        setDeletedOrderIds(new Set(deletedIds));
+        setProducts(initialProducts.filter((p) => !deletedIds.includes(p.orderId)));
+      } catch (error) {
+        console.error("Error loading deleted orders from localStorage:", error);
+      }
+    }
+  }, []);
+
+  // Handle delete action
+  const handleDelete = (orderId: string) => {
+    const newDeletedIds = new Set([...deletedOrderIds, orderId]);
+    setDeletedOrderIds(newDeletedIds);
+    setProducts(products.filter((p) => p.orderId !== orderId));
+    
+    // Save to localStorage
+    localStorage.setItem("deletedOrders", JSON.stringify(Array.from(newDeletedIds)));
+  };
 
   const columns: { key: keyof Product; label: string }[] = [
     { key: "orderId", label: "Order ID" },
@@ -114,7 +143,13 @@ const Page = () => {
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
             Recent Orders
           </h2>
-          <Table columns={columns} data={products} highlightKey="status" />
+          <Table 
+            columns={columns} 
+            data={products} 
+            highlightKey="status" 
+            onDelete={handleDelete}
+            deleteKey="orderId"
+          />
         </div>
 
         {/* Recent Messages */}
@@ -126,7 +161,7 @@ const Page = () => {
             <li className="flex items-center gap-3">
               <Mail size={20} className="text-blue-500" />
               <div>
-                <p className="font-medium text-gray-800">Vendor Ali</p>
+                <p className="font-medium text-gray-800">Vendor ABC ebike shop</p>
                 <p className="text-sm text-gray-500">Your order is shipped.</p>
               </div>
             </li>

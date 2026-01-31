@@ -3,6 +3,9 @@
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { motion } from "framer-motion";
 import { FiPackage, FiTruck, FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 
 type Order = {
   id: string;
@@ -13,7 +16,7 @@ type Order = {
 };
 
 export default function OrdersPage() {
-  const orders: Order[] = [
+  const initialOrders: Order[] = [
     {
       id: "ORD12345",
       date: "2025-08-01",
@@ -44,6 +47,33 @@ export default function OrdersPage() {
     },
   ];
 
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [deletedOrderIds, setDeletedOrderIds] = useState<Set<string>>(new Set());
+
+  // Load deleted order IDs from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("deletedMyOrders");
+    if (stored) {
+      try {
+        const deletedIds = JSON.parse(stored);
+        setDeletedOrderIds(new Set(deletedIds));
+        setOrders(initialOrders.filter((o) => !deletedIds.includes(o.id)));
+      } catch (error) {
+        console.error("Error loading deleted orders from localStorage:", error);
+      }
+    }
+  }, []);
+
+  // Handle delete action
+  const handleDelete = (id: string) => {
+    const newDeletedIds = new Set([...deletedOrderIds, id]);
+    setDeletedOrderIds(newDeletedIds);
+    setOrders(orders.filter((o) => o.id !== id));
+    
+    // Save to localStorage
+    localStorage.setItem("deletedMyOrders", JSON.stringify(Array.from(newDeletedIds)));
+  };
+
   const statusStyles = {
     Pending: { color: "text-yellow-600", bg: "bg-yellow-100", icon: <FiPackage /> },
     Shipped: { color: "text-blue-600", bg: "bg-blue-100", icon: <FiTruck /> },
@@ -66,6 +96,7 @@ export default function OrdersPage() {
                 <th className="py-3 px-4 text-left">Items</th>
                 <th className="py-3 px-4 text-left">Total</th>
                 <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-center w-12"></th>
               </tr>
             </thead>
             <tbody>
