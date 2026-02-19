@@ -3,6 +3,7 @@
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { useState } from "react";
 import { FiArrowDown, FiArrowUp } from "react-icons/fi";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 
 export default function PaymentHistory() {
   const [payments] = useState([
@@ -43,7 +44,7 @@ export default function PaymentHistory() {
               <tbody>
                 {payments.map((pay) => (
                   <tr key={pay.id} className="border-b border-gray-300 last:border-none hover:bg-gray-50">
-                    <td className="p-3">{pay.date}</td>
+                    <td className="p-3">{formatDateToMDY(pay.date)}</td>
                     <td className="p-3 flex items-center gap-2">
                       {pay.type === "Credit" ? (
                         <FiArrowDown className="text-green-500" />

@@ -64,11 +64,13 @@ export default function HelpSupport() {
             <h3 className="font-semibold text-lg">Email Us</h3>
             <p className="text-gray-600 text-sm">support@esycles.com</p>
           </div>
+          {/* Call Us - saved for later
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <FiPhone className="text-[#f59e0b] text-3xl mx-auto mb-3" />
             <h3 className="font-semibold text-lg">Call Us</h3>
             <p className="text-gray-600 text-sm">+1 234 567 890</p>
           </div>
+          */}
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <FiHelpCircle className="text-[#f59e0b] text-3xl mx-auto mb-3" />
             <h3 className="font-semibold text-lg">Live Chat</h3>

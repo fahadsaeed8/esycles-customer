@@ -15,7 +15,7 @@ import {
   FiLink2,
   FiCamera,
 } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ✅ Yup Validation Schema
 const SettingsSchema = Yup.object().shape({
@@ -28,9 +28,13 @@ const SettingsSchema = Yup.object().shape({
   postalCode: Yup.string().required("Postal code is required"),
   currentPassword: Yup.string(),
   newPassword: Yup.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: Yup.string()
-  .required("Confirm Password is required")
-  .oneOf([Yup.ref("newPassword")], "Passwords must match"),
+  confirmPassword: Yup.string().when("newPassword", (newPassword, schema) =>
+    newPassword
+      ? schema
+          .required("Confirm Password is required")
+          .oneOf([Yup.ref("newPassword")], "Passwords must match")
+      : schema.optional()
+  ),
 });
 
 export default function Settings() {
@@ -38,6 +42,15 @@ export default function Settings() {
   const [profilePicture, setProfilePicture] = useState(
     "/icons/profile-active.jpg"
   );
+  const [saveMessage, setSaveMessage] = useState<"success" | "error" | null>(null);
+
+  // Scroll to Security section when opening via "Change Password" (#security)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#security") {
+      const el = document.getElementById("security");
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
 
   const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
     if (e.target.files && e.target.files[0]) {
@@ -79,6 +92,8 @@ export default function Settings() {
           validationSchema={SettingsSchema}
           onSubmit={(values) => {
             console.log("Form Submitted:", values);
+            setSaveMessage("success");
+            setTimeout(() => setSaveMessage(null), 4000);
           }}
         >
           {({ values, errors, touched, handleChange, setFieldValue }) => (
@@ -188,7 +203,7 @@ export default function Settings() {
               </section>
 
               {/* Security Settings */}
-              <section>
+              <section id="security">
                 <h2 className="flex items-center gap-2 text-lg font-semibold mb-4 text-gray-800">
                   <FiLock className="text-[#f59e0b]" /> Security
                 </h2>
@@ -279,7 +294,12 @@ export default function Settings() {
                 </Field>
               </section>
 
-              {/* Save Button */}
+              {/* Save feedback and button */}
+              {saveMessage === "success" && (
+                <p className="text-green-600 text-sm font-medium mb-2">
+                  Settings saved successfully.
+                </p>
+              )}
               <div className="flex justify-end">
                 <button
                   type="submit"

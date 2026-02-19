@@ -3,6 +3,7 @@
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { useState } from "react";
 import { FiPlus, FiArrowUp, FiArrowDown } from "react-icons/fi";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -62,7 +63,7 @@ export default function WalletBalance() {
                       key={tx.id}
                       className="border-b last:border-none border-gray-300 hover:bg-gray-50"
                     >
-                      <td className="p-3">{tx.date}</td>
+                      <td className="p-3">{formatDateToMDY(tx.date)}</td>
                       <td className="p-3 flex items-center gap-2">
                         {tx.type === "Credit" ? (
                           <FiArrowDown className="text-green-500" />
