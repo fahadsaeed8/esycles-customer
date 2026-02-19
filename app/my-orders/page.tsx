@@ -109,7 +109,7 @@ export default function OrdersPage() {
                   className="border-b border-gray-300 last:border-none"
                 >
                   <td className="py-3 px-4">{order.id}</td>
-                  <td className="py-3 px-4">{order.date}</td>
+                  <td className="py-3 px-4">{formatDateToMDY(order.date)}</td>
                   <td className="py-3 px-4">{order.items}</td>
                   <td className="py-3 px-4 font-semibold">${order.total}</td>
                   <td className="py-3 px-4">
@@ -143,7 +143,7 @@ export default function OrdersPage() {
                   {statusStyles[order.status].icon} {order.status}
                 </span>
               </div>
-              <p className="text-sm text-gray-500">{order.date}</p>
+              <p className="text-sm text-gray-500">{formatDateToMDY(order.date)}</p>
               <p className="mt-2">{order.items}</p>
               <p className="mt-2 font-semibold">${order.total}</p>
             </motion.div>

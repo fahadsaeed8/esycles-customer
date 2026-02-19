@@ -2,6 +2,7 @@
 
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { useState, useRef, useEffect } from "react";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 
 interface Transaction {
   id: number;
@@ -75,7 +76,7 @@ export default function TransactionCommunicationHistory() {
                 <p className={`inline-block mt-2 px-2 py-1 rounded text-sm font-semibold ${statusColors[txn.status]}`}>
                   Status: {txn.status}
                 </p>
-                <p className="text-sm text-gray-400 mt-1">Date: {txn.date}</p>
+                <p className="text-sm text-gray-400 mt-1">Date: {formatDateToMDY(txn.date)}</p>
               </div>
             </div>
           ))}

@@ -17,7 +17,7 @@ const SideProfilePopUp = () => {
       id: 2,
       message: "Change Password",
       avatar: <Lock size={16} className="text-white" />,
-      link: "/settings",
+      link: "/settings#security",
     },
     {
       id: 3,

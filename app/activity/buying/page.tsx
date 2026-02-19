@@ -2,6 +2,7 @@
 
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import { useState } from "react";
+import { formatDateToMDY } from "@/utils/dateFormatter";
 
 interface Bid {
   id: number;
@@ -70,7 +71,7 @@ export default function BuyingActivity() {
                 <p className={`inline-block mt-2 px-2 py-1 rounded text-sm font-semibold ${statusColors[bid.status]}`}>
                   Status: {bid.status}
                 </p>
-                <p className="text-sm text-gray-400 mt-1">Date: {bid.date}</p>
+                <p className="text-sm text-gray-400 mt-1">Date: {formatDateToMDY(bid.date)}</p>
               </div>
             </div>
           ))}
@@ -89,7 +90,7 @@ export default function BuyingActivity() {
                 <p className={`inline-block mt-2 px-2 py-1 rounded text-sm font-semibold ${statusColors[offer.status]}`}>
                   Status: {offer.status}
                 </p>
-                <p className="text-sm text-gray-400 mt-1">Date: {offer.date}</p>
+                <p className="text-sm text-gray-400 mt-1">Date: {formatDateToMDY(offer.date)}</p>
               </div>
             </div>
           ))}
@@ -109,7 +110,7 @@ export default function BuyingActivity() {
                 <p className={`inline-block mt-2 px-2 py-1 rounded text-sm font-semibold ${statusColors[purchase.status]}`}>
                   Status: {purchase.status}
                 </p>
-                <p className="text-sm text-gray-400 mt-1">Date: {purchase.date}</p>
+                <p className="text-sm text-gray-400 mt-1">Date: {formatDateToMDY(purchase.date)}</p>
               </div>
             </div>
           ))}
